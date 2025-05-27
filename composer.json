@@ -1,0 +1,22 @@
+{
+    "name": "nishtman/github-webhook-deployer",
+    "description": "A Laravel package for GitHub webhook deployment",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Nishtman\\GithubWebhookDeployer\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Nishtman\\GithubWebhookDeployer\\Providers\\WebhookDeployerServiceProvider"
+            ]
+        }
+    },
+    "require": {
+        "php": "^8.2",
+        "illuminate/support": "^11.0"
+    }
+}
