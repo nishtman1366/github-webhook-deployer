@@ -28,13 +28,13 @@ composer require nishtman/github-webhook-deployer
 Publish the config file:
 
 ```bash
-php artisan vendor:publish --tag=github-webhook-config
+php artisan vendor:publish --provider="Nishtman\GitHubWebhookDeployer\Providers\WebhookDeployerServiceProvider" --tag=config
 ```
 
 Publish the migration file and run it:
 
 ```bash
-php artisan vendor:publish --tag=github-webhook-migrations
+php artisan vendor:publish --provider="Nishtman\GitHubWebhookDeployer\Providers\WebhookDeployerServiceProvider" --tag=migrations
 php artisan migrate
 ```
 
@@ -59,6 +59,13 @@ return [
         ],
     ],
 ];
+```
+or
+
+you can insert your repositories data in database using artisan commands
+
+```bash
+ss
 ```
 
 Make sure to set the `GITHUB_WEBHOOK_SECRET` value in your `.env` file.

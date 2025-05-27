@@ -3,6 +3,7 @@
     "description": "A Laravel package for GitHub webhook deployment",
     "type": "library",
     "license": "MIT",
+    "version": "0.0.1",
     "autoload": {
         "psr-4": {
             "Nishtman\\GithubWebhookDeployer\\": "src/"
