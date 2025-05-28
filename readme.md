@@ -1,100 +1,74 @@
 
 # GitHub Webhook Deployer
 
-A Laravel package for handling GitHub webhook events and automatically triggering deployment or custom scripts.
+A Laravel package for automated GitHub repository deployment via webhooks.
 
 ## Features
 
-- Listens for GitHub `push` webhook events.
-- Supports multi-project setup.
-- Allows custom scripts to be executed per project.
-- Secure secret validation.
-- Easy to install and configure.
-
-## Requirements
-
-- Laravel 11+
-- PHP 8.1+
-- Composer
+- Secure webhook handling with per-repository secrets
+- Multi-repository and multi-branch support
+- Custom deployment commands per branch
+- Supports Laravel, Node.js (e.g., Next.js), and other environments
 
 ## Installation
 
-Require the package using Composer:
+1. Require the package via composer (when published):
 
 ```bash
 composer require nishtman/github-webhook-deployer
 ```
 
-Publish the config file:
+2. Publish and run migrations:
 
 ```bash
-php artisan vendor:publish --provider="Nishtman\GitHubWebhookDeployer\Providers\WebhookDeployerServiceProvider" --tag=config
-```
-
-Publish the migration file and run it:
-
-```bash
-php artisan vendor:publish --provider="Nishtman\GitHubWebhookDeployer\Providers\WebhookDeployerServiceProvider" --tag=migrations
+php artisan vendor:publish --tag=github-webhook-deployer-migrations
 php artisan migrate
 ```
 
-## Configuration
-
-Once published, you can configure your webhook settings in `config/github-webhook.php`.
-
-Example config:
+3. Register the webhook route in `routes/webhook.php`:
 
 ```php
-return [
-    'secret' => env('GITHUB_WEBHOOK_SECRET'),
-    'projects' => [
-        'your-project-name' => [
-            'path' => base_path(),
-            'commands' => [
-                'git pull origin main',
-                'php artisan migrate --force',
-                'php artisan config:clear',
-                'php artisan cache:clear',
-            ],
-        ],
-    ],
-];
-```
-or
+use Nishtman\GitHubWebhookDeployer\Http\Controllers\WebhookController;
 
-you can insert your repositories data in database using artisan commands
+Route::post('/github/deploy', [WebhookController::class, 'handle']);
+```
+
+4. Add webhook to your GitHub repo with content type `application/json` and a secret.
+
+## Usage
+
+Use the built-in Artisan commands to manage repositories:
 
 ```bash
-ss
+php artisan github:add-repo
+php artisan github:list-repos
+php artisan github:remove-repo
 ```
 
-Make sure to set the `GITHUB_WEBHOOK_SECRET` value in your `.env` file.
+## Database Structure
 
-## Webhook Setup
+- `github_repositories`: Repository name and secret
+- `github_branches`: Associated branches, with local clone path and environment
+- `github_commands`: Commands to run on each branch upon deploy
 
-- In your GitHub repository, go to **Settings > Webhooks**.
-- Add a new webhook with the URL: `https://yourdomain.com/github-webhook`
-- Choose `application/json` as the content type.
-- Provide the same secret token used in `.env`.
+## Example Commands
 
-## Artisan Commands
+Laravel branch:
+- `git pull origin main`
+- `composer install --no-dev --optimize-autoloader`
+- `php artisan config:cache`
+- `php artisan migrate --force`
 
-The package provides the following Artisan commands:
+Next.js branch:
+- `git pull origin main`
+- `pnpm install --force`
+- `pnpm run build`
+- `pm2 reload <id>`
 
-```bash
-php artisan webhook:list       # List all webhook projects
-php artisan webhook:test       # Test webhook execution for a project
-```
+## Security
 
-## Security Notes
-
-- Ensure the `GITHUB_WEBHOOK_SECRET` matches between GitHub and your `.env`.
-- Protect the webhook route using middleware if needed.
-
-## Contributing
-
-Feel free to submit issues or PRs to improve this package!
+Each webhook is validated with a unique HMAC-SHA256 signature per repository.
 
 ## License
 
-MIT License. See the [LICENSE](LICENSE) file for details.
+MIT
