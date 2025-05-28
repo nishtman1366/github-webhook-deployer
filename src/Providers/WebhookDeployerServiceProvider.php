@@ -35,5 +35,9 @@ class WebhookDeployerServiceProvider extends ServiceProvider
             ListRepositoriesCommand::class,
             RemoveRepositoryCommand::class,
         ]);
+
+        $this->app->singleton('github-webhook-deployer', function () {
+            return new \Nishtman\GitHubWebhookDeployer\Services\GitHubDeployerService;
+        });
     }
 }
