@@ -1,23 +1,26 @@
 {
-    "name": "nishtman/github-webhook-deployer",
-    "description": "A Laravel package for GitHub webhook deployment",
-    "type": "library",
-    "license": "MIT",
-    "version": "0.0.1",
-    "autoload": {
-        "psr-4": {
-            "Nishtman\\GithubWebhookDeployer\\": "src/"
-        }
-    },
-    "extra": {
-        "laravel": {
-            "providers": [
-                "Nishtman\\GithubWebhookDeployer\\Providers\\WebhookDeployerServiceProvider"
-            ]
-        }
-    },
-    "require": {
-        "php": "^8.2",
-        "illuminate/support": "^11.0"
+  "name": "nishtman/github-webhook-deployer",
+  "description": "A Laravel package for GitHub webhook deployment",
+  "type": "library",
+  "license": "MIT",
+  "version": "0.0.1",
+  "autoload": {
+    "psr-4": {
+      "Nishtman\\GithubWebhookDeployer\\": "src/"
     }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Nishtman\\GithubWebhookDeployer\\Providers\\WebhookDeployerServiceProvider"
+      ]
+    },
+    "branch-alias": {
+      "dev-main": "0.0.x-dev"
+    }
+  },
+  "require": {
+    "php": "^8.2",
+    "illuminate/support": "^11.0"
+  }
 }
